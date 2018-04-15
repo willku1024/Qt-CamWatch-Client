@@ -323,16 +323,18 @@ void VideoWindow::hasDataArrivedSlot(QByteArray frame)
 
     this->update();
 
-    QBuffer buffer;
-    buffer.open(QIODevice::ReadWrite);
-
-    //pixmap不能为空，必须先将图片加载到pixmap中
-    paintImg.save(&buffer,"JPEG");
-    QByteArray pixArray;
-    pixArray.append(buffer.data());
+    
 
     if(this->isVideo)
     {
+        QBuffer buffer;
+        buffer.open(QIODevice::ReadWrite);
+
+        //pixmap不能为空，必须先将图片加载到pixmap中
+        paintImg.save(&buffer,"JPEG");
+        QByteArray pixArray;
+        pixArray.append(buffer.data());
+        
         //if(AVI_write_frame(this->avi,frame.data(),frame.size(),0)<0)
         if(AVI_write_frame(this->avi,pixArray.data(),pixArray.size(),0)<0)
         {
